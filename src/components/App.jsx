@@ -1,73 +1,91 @@
-import { Component } from 'react';
-import { ContactForm } from './ContactForm/Form';
-import { ContactList } from './ContactList/List';
-import { Filter } from './Filter/Filter';
-import s from "./AllStyles.module.scss";
+import { Component } from "react";
+import { nanoid } from "nanoid";
 
-export class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      contacts: [
-        { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-        { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-        { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-        { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-      ],
-      filter: '',
-    };
-  }
+import ContactForm from "./ContactForm";
+import ContactList from "./ContactList";
 
-  addContact = event => {
-    const loweredCase = event.name.toLowerCase().trim();
+import Styles from "./App.module.css";
 
-    const exists = this.state.contacts.some(
-      contact => contact.name.toLowerCase().trim() === loweredCase
-    );
+export default class App extends Component {
+  state = {
+    contacts: [
+      { id: "id-1", name: "Rosie Simpson", number: "459-12-56" },
+      { id: "id-2", name: "Hermione Kline", number: "443-89-12" },
+      { id: "id-3", name: "Eden Clements", number: "645-17-79" },
+      { id: "id-4", name: "Annie Copeland", number: "227-91-26" },
+    ],
+    name: "",
+    number: "",
+    filter: "",
+  };
 
-    if (exists) {
-      alert(`${event.name} is already in contacts!`);
+  inputChangeName = (ev) => {
+    this.setState({ name: ev.target.value });
+  };
+  inputChangeNumber = (ev) => {
+    this.setState({ number: ev.target.value });
+  };
+
+  inputFilterName = (ev) => {
+    this.setState({ filter: ev.target.value });
+  };
+
+  buttonAddContact = (ev) => {
+    ev.preventDefault();
+    console.log(this.state.name);
+    if (this.state.contacts.find((obj) => obj.name === this.state.name)) {
+      alert(this.state.name + " is already in contacts");
     } else {
-      this.setState(({ contacts }) => ({
-        contacts: [...contacts, event],
+      this.setState((prevState) => ({
+        contacts: [
+          ...prevState.contacts,
+          {
+            id: nanoid(),
+            name: prevState.name,
+            number: prevState.number,
+          },
+        ],
+        name: "",
+        number: "",
       }));
     }
   };
 
-  addFilter = event => {
-    this.setState({ filter: event.currentTarget.value });
-  };
-
-  filteredContacts = () => {
-    const { filter, contacts } = this.state;
-
-    return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(filter.toLowerCase())
-    );
-  };
-
-  deleteContact = id =>
-    this.setState(({ contacts }) => ({
-      contacts: contacts.filter(contact => contact.id !== id),
+  buttonDelete = (ev) => {
+    this.setState((prevState) => ({
+      contacts: prevState.contacts.filter((obj) => obj.id !== ev.target.value),
     }));
+  };
 
   render() {
-    const { filter } = this.state;
+    const options = {
+      nameHandler: this.inputChangeName,
+      numberHandler: this.inputChangeNumber,
+      submitHandler: this.buttonAddContact,
+    };
 
     return (
-      <section className={s.content}>
-        <div className={s.content__container}>
-          <ContactForm addContact={this.addContact} />
-          <ContactList
-            contacts={this.filteredContacts()}
-            deleteContact={this.deleteContact}
-          >
-            <Filter filter={filter} addFilter={this.addFilter} />
-          </ContactList>
+      <section className={Styles.section}>
+        <div className={Styles.book}>
+          <div className={Styles.leftPage}>
+            <h1>Phonebook</h1>
+            <ContactForm
+              options={options}
+              name={this.state.name}
+              number={this.state.number}
+            />
+          </div>
+          <div className={Styles.rightPage}>
+            <h2>Contacts</h2>
+            <ContactList
+              allContact={this.state.contacts}
+              filter={this.state.filter}
+              filterFunc={this.inputFilterName}
+              deleteFunc={this.buttonDelete}
+            />
+          </div>
         </div>
       </section>
-    ); 
+    );
   }
-
 }
-export default App;
