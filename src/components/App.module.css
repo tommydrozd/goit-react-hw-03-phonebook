@@ -1,12 +1,9 @@
-@import-normalize;
-
 /* Global Styles */
 
 body {
   font-family: 'Open Sans', sans-serif;
   line-height: 1.6;
   color: #333;
-  background-color: #f7f7f7;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -36,7 +33,6 @@ img {
 /* Section Styles */
 
 .section {
-  background-image: linear-gradient(to bottom, #ff4b4b, #bd7878);
   padding: 40px;
   border-radius: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -52,7 +48,6 @@ img {
   flex-wrap: wrap;
   justify-content: center;
   padding: 40px;
-  background-image: linear-gradient(to bottom, #66d9ef, #33cccc);
   border-radius: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -80,6 +75,5 @@ img {
   margin: 10px;
   padding: 20px;
   border-radius: 10px;
-  background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
