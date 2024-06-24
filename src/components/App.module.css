@@ -1,4 +1,5 @@
 /* Global Styles */
+@import-normalize;
 
 body {
   font-family: 'Open Sans', sans-serif;
